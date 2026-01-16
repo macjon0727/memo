@@ -151,4 +151,4 @@ from student s
 
 select s.name, s.major_code, m.major_name
 from student s, major m
-where s.major_code = m.major_code;1
+where s.major_code = m.major_code;

@@ -76,6 +76,7 @@ public class MemoController {
         // 해당 id의 메모리가 데이터베이스에 존재하는지 확인
         Memo foundMemo = findById(id);
 
+        // 메모 내용 수정
         if (foundMemo != null) {
             String sql = "UPDATE memo SET username = ?, contents = ?, WHERE id = ?";
             jdbcTemplate.update(sql, memoRequestDto.getUsername(), memoRequestDto.getContents(), id);
@@ -85,17 +86,20 @@ public class MemoController {
         }
     }
 
-//    @DeleteMapping("{id}")
-//    public Long deleteMemo(@PathVariable Long id) {
-//        // 해당 id의 메모리가 데이터베이스에 존재하는지 확인
-//        if (memoList.containsKey(id)) {
-//            // true 면, 해당 메모 삭제
-//            memoList.remove(id);
-//            return id;
-//        }else {
-//            throw new IllegalArgumentException("선택한 id의 메모는 존재하지 않습니다.");
-//        }
-//    }
+    @DeleteMapping("{id}")
+    public Long deleteMemo(@PathVariable Long id) {
+        // 해당 id의 메모리가 데이터베이스에 존재하는지 확인
+        Memo foundMemo = findById(id);
+
+        // 메모 내용 삭제
+        if (foundMemo != null) {
+            String sql = "DELETE FROM memo WHERE id = ?";
+            jdbcTemplate.update(sql, id);
+            return id;
+        } else {
+            throw new IllegalArgumentException("선택한 id의 메모는 존재하지 않습니다.");
+        }
+    }
 
     // 특정 id의 메모 존재 여부 확인 공용 메소드
     private Memo findById(Long id) {

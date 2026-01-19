@@ -18,51 +18,32 @@ import java.util.*;
 @RestController
 @RequestMapping("api/memos")
 public class MemoController {
-    // JDBC를 통한 MySQL 데이터베이스 연결
-    private final JdbcTemplate jdbcTemplate;
+    // 멤버 변수 선언
+    private final MemoService memoService;
 
+    // 생성자 주입(DI)
     public MemoController(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.memoService = new MemoService(jdbcTemplate);
     }
 
     @PostMapping()
     public MemoResponseDto createMemo(@RequestBody MemoRequestDto memoRequestDto) {
-        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.createMemo(memoRequestDto);
     }
 
     @GetMapping()
     public List<MemoResponseDto> getMemos() {
-        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.getMemos();
     }
 
     @PutMapping("{id}")
     public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto memoRequestDto) {
-        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.updateMemo(id, memoRequestDto);
     }
 
     @DeleteMapping("{id}")
     public Long deleteMemo(@PathVariable Long id) {
-        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.deleteMemo(id);
     }
 
-    // 특정 id의 메모 존재 여부 확인 공용 메소드
-    private Memo findById(Long id) {
-        // DB 조회
-        String sql = "SELECT * FROM memo WHERE id = ?";
-
-        return jdbcTemplate.query(sql, resultSet -> {
-            if (resultSet.next()) {
-                Memo memo = new Memo();
-                memo.setUsername(resultSet.getString("username"));
-                memo.setContents(resultSet.getString("contents"));
-                return memo;
-            } else {
-                return null;
-            }
-        }, id);
-    }
 }

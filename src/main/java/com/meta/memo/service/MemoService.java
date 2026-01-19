@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -16,23 +18,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Service
 public class MemoService {
     // 멤버 변수 선언
     private final MemoRepository memoRepository;
 
     // 생성자 주입(DI)
-    public MemoService(JdbcTemplate jdbcTemplate) {
-        this.memoRepository = new MemoRepository(jdbcTemplate);
+    public MemoService(MemoRepository memoRepository) {
+        this.memoRepository = memoRepository;
     }
 
-    public MemoResponseDto createMemo(MemoRequestDto memoRequestDto) {
+    public MemoResponseDto createMemo(@RequestBody MemoRequestDto memoRequestDto) {
         // RequestDto -> Entity 변환
         Memo newMemo = new Memo(memoRequestDto);
 
         Memo savedMemo = memoRepository.save(newMemo);
 
         // Entity -> ResponseDto 변환
-        MemoResponseDto memoResponseDto = new MemoResponseDto(newMemo);
+        MemoResponseDto memoResponseDto = new MemoResponseDto(savedMemo);
 
         return memoResponseDto;
     }

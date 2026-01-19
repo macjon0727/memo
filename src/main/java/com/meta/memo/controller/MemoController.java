@@ -22,8 +22,8 @@ public class MemoController {
     private final MemoService memoService;
 
     // 생성자 주입(DI)
-    public MemoController(JdbcTemplate jdbcTemplate) {
-        this.memoService = new MemoService(jdbcTemplate);
+    public MemoController(MemoService memoService) {
+        this.memoService = memoService;
     }
 
     @PostMapping()

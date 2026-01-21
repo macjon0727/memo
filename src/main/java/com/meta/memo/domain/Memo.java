@@ -1,6 +1,7 @@
 package com.meta.memo.domain;
 
 import com.meta.memo.dto.MemoRequestDto;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,9 +9,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Memo {
-    private Long id; //계정 아니고 인덱스임
+@Entity
+@Table(name = "memo")
+public class Memo extends TimeStamped {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "username", nullable = false)
     private String username;
+
+    @Column(name = "contents", nullable = false, length = 500)
     private String contents;
 
     public Memo(MemoRequestDto memoRequestDto) {
@@ -18,8 +27,9 @@ public class Memo {
         this.contents = memoRequestDto.getContents();
     }
 
-    public void update(MemoRequestDto memoRequestDto){
+    public void update(MemoRequestDto memoRequestDto) {
         this.username = memoRequestDto.getUsername();
         this.contents = memoRequestDto.getContents();
     }
+
 }

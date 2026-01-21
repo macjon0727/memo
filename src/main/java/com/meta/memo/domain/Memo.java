@@ -9,14 +9,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name="memo")
 @Entity
-public class Memo {
+@Table(name = "memo")
+public class Memo extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; //계정 아니고 인덱스임
+    private Long id;
 
-    @Column(name = "Username", nullable = false)
+    @Column(name = "username", nullable = false)
     private String username;
 
     @Column(name = "contents", nullable = false, length = 500)
@@ -27,8 +27,9 @@ public class Memo {
         this.contents = memoRequestDto.getContents();
     }
 
-    public void update(MemoRequestDto memoRequestDto){
+    public void update(MemoRequestDto memoRequestDto) {
         this.username = memoRequestDto.getUsername();
         this.contents = memoRequestDto.getContents();
     }
+
 }

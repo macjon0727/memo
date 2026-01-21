@@ -40,9 +40,9 @@ public class MemoService {
     }
 
     public List<MemoResponseDto> getMemos() {
-        List<MemoResponseDto> memoResponseDtoList = memoRepository.findAll().stream()
-                .map(MemoResponseDto::new).toList();
-        return memoResponseDtoList;
+        return memoRepository.findAllByOrderByCreatedAtDesc().stream()
+                .map(MemoResponseDto::new)
+                .toList();
     }
 
     public Memo getMemoById(Long id) {

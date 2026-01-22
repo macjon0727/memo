@@ -45,6 +45,15 @@ public class MemoService {
                 .toList();
     }
 
+    public List<MemoResponseDto> getMemosByKeyword(String keyword) {
+        // 1. 리포지토리에 새로 만든 쿼리 메서드를 호출하여 검색 결과(Entity 리스트)를 가져옵니다.
+        // 2. Stream API를 사용하여 Entity 객체들을 MemoResponseDto로 변환합니다.
+        // 3. 최종적으로 List 형태로 반환합니다.
+        return memoRepository.findAllByContentsContainingOrderByModifiedAtDesc(keyword).stream()
+                .map(MemoResponseDto::new)
+                .toList();
+    }
+
     public Memo getMemoById(Long id) {
         return memoRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("선택한 id의 메모는 존재하지 않습니다."));

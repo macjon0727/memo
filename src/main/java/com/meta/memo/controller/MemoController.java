@@ -36,6 +36,12 @@ public class MemoController {
         return memoService.getMemos();
     }
 
+    @GetMapping("/contents") // http://localhost:8080/api/memos/contents
+    public List<MemoResponseDto> getMemosByKeyword(@RequestParam String keyword) {
+        // @RequestParam은 URL 뒤에 붙는 ?keyword=값 부분을 읽어옵니다.
+        return memoService.getMemosByKeyword(keyword);
+    }
+
     @PutMapping("{id}")
     public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto memoRequestDto) {
         return memoService.updateMemo(id, memoRequestDto);
